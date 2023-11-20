@@ -1,1 +1,25 @@
-<p>header works!</p>
+<nav class="nav">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="menu">
+        <a class="logo col-6 align-self-center" [routerLink]="['/search']"
+          >PokéApp</a
+        >
+        <div class="align-self-center justify-content-center">
+          <a
+            class="nav-button"
+            routerLinkActive="nav-active"
+            [routerLink]="['/search']"
+            >Search</a
+          >
+          <a
+            class="nav-button"
+            routerLinkActive="nav-active"
+            [routerLink]="['/list']"
+            >List</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

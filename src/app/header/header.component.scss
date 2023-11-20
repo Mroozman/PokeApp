@@ -1,0 +1,35 @@
+@import "library";
+
+nav {
+  background-color: $primary;
+}
+
+.menu {
+  display: inline-flex;
+}
+
+.logo {
+  font-size: 26px;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.nav-button {
+  font-size: 22px;
+  padding-right: 10px;
+  background-color: $primary;
+  color: white;
+  text-decoration: none;
+}
+
+.nav-button:hover {
+  text-decoration: underline;
+  text-decoration-color: $accent;
+}
+
+.nav-active {
+  text-decoration: underline;
+  text-decoration-color: $accent;
+}
