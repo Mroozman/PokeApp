@@ -6,18 +6,28 @@ import { AppComponent } from './app.component';
 import { SearchComponent } from './search/search.component';
 import { HeaderComponent } from './header/header.component';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListComponent } from './list/list.component';
 import { MenuModule } from 'primeng/menu';
+import { SearchBarComponent } from './search/search-bar/search-bar.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [AppComponent, SearchComponent, HeaderComponent, ListComponent],
+  declarations: [
+    AppComponent,
+    SearchComponent,
+    HeaderComponent,
+    ListComponent,
+    SearchBarComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     MenuModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
