@@ -11,6 +11,7 @@ import { ListComponent } from './list/list.component';
 import { MenuModule } from 'primeng/menu';
 import { SearchBarComponent } from './search/search-bar/search-bar.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ListOfSearchedComponent } from './search/list-of-searched/list-of-searched.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
     HeaderComponent,
     ListComponent,
     SearchBarComponent,
+    ListOfSearchedComponent,
   ],
   imports: [
     BrowserModule,

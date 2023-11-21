@@ -1,3 +1,25 @@
+@import "library";
+
 .search-component {
   padding: 10px 0px;
+}
+
+.mode-buttons {
+  padding: 15px 0px;
+}
+
+.mode-button {
+  border-radius: 25px;
+  background-color: $primary;
+  color: white;
+  padding: 10px;
+  border: 1px solid $accent;
+}
+
+.mode-button:hover {
+  background-color: $primary-hover;
+}
+
+.mode-button-active {
+  border: 2px solid $accent;
 }

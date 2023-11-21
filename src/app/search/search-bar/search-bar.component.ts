@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription, debounceTime, pipe, takeWhile } from 'rxjs';
 import { PokemonService } from 'src/app/services/pokemon.service';
@@ -22,12 +29,18 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.subscriptionStore.add(
       this.searchBarForm.valueChanges.pipe(debounceTime(800)).subscribe({
         next: () => {
-          this.pokemonService.fetchPokemonByNameOrId(
-            this.searchBarForm.get('pokemonInput').value
-          );
+          const pkmnlookingFor: string =
+            this.searchBarForm.get('pokemonInput').value;
+          this.pokemonService.lookForPokemon(pkmnlookingFor);
         },
       })
     );
+
+    // this.subscriptionStore.add(
+    //   this.pokemonService.searchByColor.subscribe(() => {
+    //     this.searchBarForm.reset();
+    //   })
+    // );
   }
 
   public ngOnDestroy(): void {

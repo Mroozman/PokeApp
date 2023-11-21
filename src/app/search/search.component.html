@@ -1,4 +1,31 @@
 <div class="col-12 search-component">
   <h2 class="text-center">Look for a Pokémon!</h2>
+  <div class="row text-center mode-buttons">
+    <div class="col-2 offset-4">
+      <button
+        [ngClass]="!searchByColor ? 'mode-button-active' : ''"
+        class="mode-button"
+        (click)="onNameOrIdSearch()"
+      >
+        Search by name / Pokedex number
+      </button>
+    </div>
+    <div class="col-2">
+      <button
+        [ngClass]="searchByColor ? 'mode-button-active' : ''"
+        class="mode-button"
+        (click)="onColorSearch()"
+      >
+        Search by color
+      </button>
+    </div>
+  </div>
+  <p *ngIf="!searchByColor" class="text-center">
+    You are searching by Pokemon name / Pokedex number!
+  </p>
+  <p *ngIf="searchByColor" class="text-center">
+    You are searching by Pokemon color!
+  </p>
   <app-search-bar class="text-center"></app-search-bar>
+  <app-list-of-searched></app-list-of-searched>
 </div>

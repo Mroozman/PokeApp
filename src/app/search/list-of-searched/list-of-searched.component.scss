@@ -1,0 +1,17 @@
+@import "library";
+
+.finded-pokemon {
+  font-size: 20px;
+  padding: 0px 10px;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.finded-pokemon:hover {
+  color: $accent;
+}
+
+.searched-pokemon {
+  padding: 20px 0px;
+}
