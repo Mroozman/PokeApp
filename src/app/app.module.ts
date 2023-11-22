@@ -12,6 +12,7 @@ import { MenuModule } from 'primeng/menu';
 import { SearchBarComponent } from './search/search-bar/search-bar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ListOfSearchedComponent } from './search/list-of-searched/list-of-searched.component';
+import { DetailsComponent } from './details/details.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ListOfSearchedComponent } from './search/list-of-searched/list-of-searc
     ListComponent,
     SearchBarComponent,
     ListOfSearchedComponent,
+    DetailsComponent,
   ],
   imports: [
     BrowserModule,

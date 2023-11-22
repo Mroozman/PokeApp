@@ -11,6 +11,7 @@ import { PokemonService } from 'src/app/services/pokemon.service';
 export class ListOfSearchedComponent implements OnInit, OnDestroy {
   private subscriptionStore = new Subscription();
   public listOfFindedPokemon: string[] = [];
+  public noPokemonsMessage: string = 'No pokemons found!';
 
   constructor(private pokemonService: PokemonService) {}
 
@@ -18,8 +19,13 @@ export class ListOfSearchedComponent implements OnInit, OnDestroy {
     this.subscriptionStore.add(
       this.pokemonService.listOfPokemonByColor.subscribe(
         (pokemons: string[]) => {
-          this.listOfFindedPokemon = [];
-          this.listOfFindedPokemon.push(...pokemons);
+          if (pokemons.length > 0) {
+            this.noPokemonsMessage = '';
+            this.listOfFindedPokemon = [];
+            this.listOfFindedPokemon.push(...pokemons);
+          } else {
+            this.noPokemonsMessage = 'No pokemons found!';
+          }
         }
       )
     );

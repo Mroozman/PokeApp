@@ -35,12 +35,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
         },
       })
     );
-
-    // this.subscriptionStore.add(
-    //   this.pokemonService.searchByColor.subscribe(() => {
-    //     this.searchBarForm.reset();
-    //   })
-    // );
   }
 
   public ngOnDestroy(): void {

@@ -1,0 +1,44 @@
+<div class="col-12 text-center">
+  <h1>#{{ pokemonData.id }} {{ pokemonData.name | uppercase }}</h1>
+  <hr />
+  <img class="pokemon-sprite" src="{{ pokemonData.sprite }}" />
+  <hr />
+  <div class="row justify-content-center">
+    <h4 class="col-1" *ngFor="let type of pokemonData.type">
+      {{ type.name | uppercase }}
+    </h4>
+  </div>
+  <div class="row justify-content-center">
+    <p class="col-2">Height: {{ pokemonData.height }}m</p>
+    <p class="col-2">Weight: {{ pokemonData.weight }}kg</p>
+  </div>
+  <hr />
+  <h4>Stats:</h4>
+  <div class="row justify-content-center">
+    <h5 class="col-2">HP: {{ pokemonData.stats.HP }}</h5>
+    <h5 class="col-2">Speed: {{ pokemonData.stats.Speed }}</h5>
+  </div>
+  <div class="row justify-content-center">
+    <h5 class="col-2">Attack: {{ pokemonData.stats.Attack }}</h5>
+    <h5 class="col-2">Defense: {{ pokemonData.stats.Defense }}</h5>
+  </div>
+  <div class="row justify-content-center">
+    <h5 class="col-2">Sp.Attack: {{ pokemonData.stats.SpAttack }}</h5>
+    <h5 class="col-2">Sp.Defense: {{ pokemonData.stats.SpDefense }}</h5>
+  </div>
+  <h5>Stats sum: {{ calculateStatsSum() }}</h5>
+  <hr />
+  <h4>Abilities:</h4>
+  <div class="row justify-content-center">
+    <h5 class="col-2" *ngFor="let ability of pokemonData.abilities">
+      {{ ability.name }}
+    </h5>
+  </div>
+  <hr />
+  <h4>Moves:</h4>
+  <div class="row justify-content-center">
+    <p class="col-6 col-md-3 col-lg-2" *ngFor="let move of pokemonData.moves">
+      {{ move.name | uppercase }}
+    </p>
+  </div>
+</div>

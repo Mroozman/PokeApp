@@ -1,16 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Pokemon } from '../models/pokemon.model';
-import { BehaviorSubject, Subject, Subscription, map } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription, catchError, map } from 'rxjs';
 import { Stats } from '../models/stats.model';
 import { PokemonType } from '../models/pokemonType.model';
 import { Move } from '../models/move.model';
 import { Ability } from '../models/ability.model';
+import {
+  ActivatedRouteSnapshot,
+  ResolveFn,
+  RouterStateSnapshot,
+} from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PokemonService {
+  public searchedPkmn: Pokemon;
   public searchedPokemon = new Subject<Pokemon>();
   private listOfPkmnByColor: string[] = [];
   public listOfPokemonByColor = new Subject<string[]>();
@@ -18,7 +24,7 @@ export class PokemonService {
 
   constructor(private http: HttpClient) {}
 
-  public fetchPokemonByNameOrId(nameOrId: string): void {
+  public fetchPokemonByNameOrId(nameOrId: string): Pokemon {
     if (nameOrId !== null) {
       const url = 'https://pokeapi.co/api/v2/pokemon/' + nameOrId;
       this.http
@@ -63,14 +69,18 @@ export class PokemonService {
         )
         .subscribe({
           next: (pokemon: Pokemon) => {
-            this.searchedPokemon.next(pokemon);
-            this.listOfPokemonByColor.next([pokemon.name]);
-            this.listOfPkmnByColor = [pokemon.name];
+            this.searchedPkmn = pokemon;
+            this.searchedPokemon.next(this.searchedPkmn);
+            this.listOfPokemonByColor.next([this.searchedPkmn.name]);
+            this.listOfPkmnByColor = [this.searchedPkmn.name];
           },
           error: (error) => {
-            console.log(error);
+            this.listOfPokemonByColor.next([]);
+            this.listOfPkmnByColor = [];
+            this.searchedPokemon.next(null);
           },
         });
+      return this.searchedPkmn;
     }
   }
 
@@ -94,9 +104,16 @@ export class PokemonService {
             }
           )
         )
-        .subscribe(() => {
-          this.listOfPokemonByColor.next(this.listOfPkmnByColor);
-          this.searchedPokemon.next(null);
+        .subscribe({
+          next: () => {
+            this.listOfPokemonByColor.next(this.listOfPkmnByColor);
+            this.searchedPokemon.next(null);
+          },
+          error: (error) => {
+            this.listOfPokemonByColor.next([]);
+            this.listOfPkmnByColor = [];
+            this.searchedPokemon.next(null);
+          },
         });
     }
   }
@@ -111,4 +128,33 @@ export class PokemonService {
       }
     });
   }
+
+  public getSearchedPokemon(): Pokemon {
+    if (this.searchedPkmn !== null || this.searchedPkmn !== undefined) {
+      const copyOfSearchedPkmn = new Pokemon(
+        this.searchedPkmn.id,
+        this.searchedPkmn.name,
+        this.searchedPkmn.height,
+        this.searchedPkmn.weight,
+        this.searchedPkmn.abilities,
+        this.searchedPkmn.moves,
+        this.searchedPkmn.sprite,
+        this.searchedPkmn.stats,
+        this.searchedPkmn.type
+      );
+      return copyOfSearchedPkmn;
+    } else {
+      return null;
+    }
+  }
 }
+
+export const resolvePokemonData: ResolveFn<Pokemon> = (
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+) => {
+  inject(PokemonService).fetchPokemonByNameOrId(route.params['pokemon']);
+  // console.log("route.params['pokemon']");
+  // console.log(route.params['pokemon']);
+  return inject(PokemonService).getSearchedPokemon();
+};

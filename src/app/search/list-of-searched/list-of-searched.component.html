@@ -1,8 +1,13 @@
-<div class="row searched-pokemon">
+<div *ngIf="noPokemonsMessage === ''" class="row searched-pokemon">
   <div
     *ngFor="let pokemon of listOfFindedPokemon"
     class="col-6 col-md-3 col-lg-2"
   >
-    <a class="finded-pokemon">{{ pokemon | uppercase }}</a>
+    <a [routerLink]="['/details', pokemon]" class="finded-pokemon">{{
+      pokemon | uppercase
+    }}</a>
   </div>
+</div>
+<div *ngIf="noPokemonsMessage !== ''" class="row text-center">
+  <p>{{ noPokemonsMessage }}</p>
 </div>
