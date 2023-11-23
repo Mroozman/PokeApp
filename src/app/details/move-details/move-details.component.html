@@ -11,16 +11,25 @@
   <div class="container move-tooltip">
     <div class="row justify-content-center">
       <div class="col-12">
-        <h5>{{ pokemonMove.name | uppercase }}</h5>
+        <h5>{{ pokemonMoveDetail.name | uppercase }}</h5>
       </div>
       <hr />
       <div class="move-details">
-        <div class="col-12">Type: Special</div>
-        <div class="col-12">Accuracy: 100</div>
-        <div class="col-12">Power: 100</div>
+        <div class="col-12">
+          Move Type: {{ pokemonMoveDetail.attackType | titlecase }}
+        </div>
+        <div class="col-12">
+          Type: {{ pokemonMoveDetail.type.name | titlecase }}
+        </div>
+        <div *ngIf="pokemonMoveDetail.accuracy" class="col-12">
+          Accuracy: {{ pokemonMoveDetail.accuracy }}
+        </div>
+        <div *ngIf="pokemonMoveDetail.attackType !== 'status'" class="col-12">
+          Power: {{ pokemonMoveDetail.power }}
+        </div>
       </div>
       <hr />
-      <p>desc</p>
+      <p>{{ pokemonMoveDetail.description }}</p>
     </div>
   </div>
 </ng-template>
