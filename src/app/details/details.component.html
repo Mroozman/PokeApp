@@ -3,6 +3,7 @@
   <hr />
   <img class="pokemon-sprite" src="{{ pokemonData.sprite }}" />
   <hr />
+  <h4>Type</h4>
   <div class="row justify-content-center">
     <h4 class="col-1" *ngFor="let type of pokemonData.type">
       {{ type.name | uppercase }}
@@ -31,14 +32,45 @@
   <h4>Abilities:</h4>
   <div class="row justify-content-center">
     <h5 class="col-2" *ngFor="let ability of pokemonData.abilities">
-      {{ ability.name }}
+      {{ ability.name | uppercase }}
     </h5>
   </div>
   <hr />
   <h4>Moves:</h4>
-  <div class="row justify-content-center">
-    <p class="col-6 col-md-3 col-lg-2" *ngFor="let move of pokemonData.moves">
+  <!-- <div class="row justify-content-center">
+    <button
+      [pTooltip]="tooltipContent"
+      tooltipPosition="top"
+      tooltipEvent="focus"
+      class="col-6 col-md-3 col-lg-2 move-button"
+      *ngFor="let move of pokemonData.moves"
+    >
       {{ move.name | uppercase }}
-    </p>
+    </button>
+  </div> -->
+  <div class="row justify-content-center">
+    <app-move-details
+      class="col-6 col-md-3 col-lg-2"
+      *ngFor="let move of pokemonData.moves"
+      [pokemonMove]="move"
+    ></app-move-details>
   </div>
 </div>
+
+<ng-template #tooltipContent>
+  <div class="container move-tooltip">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <h5>move name</h5>
+      </div>
+      <hr />
+      <div class="move-details">
+        <div class="col-12">Type: Special</div>
+        <div class="col-12">Accuracy: 100</div>
+        <div class="col-12">Power: 100</div>
+      </div>
+      <hr />
+      <p>Move description</p>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,26 @@
+@import "library";
+
+.move-tooltip {
+  background-color: $primary-hover;
+  border: 1px solid $accent;
+  z-index: 100;
+  padding: 15px;
+  border-radius: 25px;
+}
+
+.move-details {
+  padding-bottom: 15px;
+}
+
+.move-button {
+  background-color: $primary;
+  border: 1px solid transparent;
+  color: white;
+  margin: 5px;
+  width: 100%;
+}
+
+.move-button:hover {
+  background-color: $primary-hover;
+  border: 1px solid $accent;
+}

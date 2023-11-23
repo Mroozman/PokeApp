@@ -13,6 +13,8 @@ import { SearchBarComponent } from './search/search-bar/search-bar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ListOfSearchedComponent } from './search/list-of-searched/list-of-searched.component';
 import { DetailsComponent } from './details/details.component';
+import { TooltipModule } from 'primeng/tooltip';
+import { MoveDetailsComponent } from './details/move-details/move-details.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { DetailsComponent } from './details/details.component';
     SearchBarComponent,
     ListOfSearchedComponent,
     DetailsComponent,
+    MoveDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,6 +35,7 @@ import { DetailsComponent } from './details/details.component';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    TooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
