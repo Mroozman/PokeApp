@@ -11,6 +11,7 @@ import {
   ResolveFn,
   RouterStateSnapshot,
 } from '@angular/router';
+import { PokemonCacheService } from './pokemon-cache.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,10 @@ export class PokemonService {
   public listOfPokemonByColor = new Subject<string[]>();
   public searchByColor = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private pokemonCacheService: PokemonCacheService
+  ) {}
 
   public fetchPokemonByNameOrId(nameOrId: string): Pokemon {
     if (nameOrId !== null) {
@@ -70,9 +74,15 @@ export class PokemonService {
         .subscribe({
           next: (pokemon: Pokemon) => {
             this.searchedPkmn = pokemon;
+            this.searchedPkmn.height = this.searchedPkmn.height / 10;
+            this.searchedPkmn.weight = this.searchedPkmn.weight / 10;
             this.searchedPokemon.next(this.searchedPkmn);
             this.listOfPokemonByColor.next([this.searchedPkmn.name]);
             this.listOfPkmnByColor = [this.searchedPkmn.name];
+            this.pokemonCacheService.set(
+              this.searchedPkmn.name,
+              this.searchedPkmn
+            );
           },
           error: (error) => {
             this.listOfPokemonByColor.next([]);
@@ -124,7 +134,15 @@ export class PokemonService {
         this.fetchPokemonByColor(nameIdOrColor);
       }
       if (!byColor) {
-        this.fetchPokemonByNameOrId(nameIdOrColor);
+        const cachedPokemon = this.pokemonCacheService.get(nameIdOrColor);
+        if (cachedPokemon !== undefined) {
+          this.searchedPkmn = cachedPokemon;
+          this.searchedPokemon.next(this.searchedPkmn);
+          this.listOfPokemonByColor.next([this.searchedPkmn.name]);
+          this.listOfPkmnByColor = [this.searchedPkmn.name];
+        } else {
+          this.fetchPokemonByNameOrId(nameIdOrColor);
+        }
       }
     });
   }
@@ -153,8 +171,13 @@ export const resolvePokemonData: ResolveFn<Pokemon> = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {
-  inject(PokemonService).fetchPokemonByNameOrId(route.params['pokemon']);
-  // console.log("route.params['pokemon']");
-  // console.log(route.params['pokemon']);
-  return inject(PokemonService).getSearchedPokemon();
+  const cachedPokemon = inject(PokemonCacheService).get(
+    route.params['pokemon']
+  );
+  if (cachedPokemon !== undefined) {
+    return cachedPokemon;
+  } else {
+    inject(PokemonService).fetchPokemonByNameOrId(route.params['pokemon']);
+    return inject(PokemonService).getSearchedPokemon();
+  }
 };

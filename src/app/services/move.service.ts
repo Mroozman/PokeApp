@@ -3,18 +3,21 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { MoveDetail } from '../models/moveDetail';
 import { PokemonType } from '../models/pokemonType.model';
+import { MoveCacheService } from './move-cache.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MoveService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private moveCacheService: MoveCacheService
+  ) {}
 
   getMoveByNameOrId(url: string) {
     return this.http.get(url).pipe(
       map((moveFromApi: any) => {
         const name = moveFromApi.name.replace('-', ' ');
-        console.log(name);
         let description: string = 'No special effect';
 
         if (moveFromApi.effect_entries.length > 0) {
@@ -26,7 +29,7 @@ export class MoveService {
             );
           }
         }
-        return new MoveDetail(
+        const moveDetail = new MoveDetail(
           name,
           moveFromApi.damage_class.name,
           moveFromApi.accuracy,
@@ -34,6 +37,8 @@ export class MoveService {
           description,
           moveFromApi.power
         );
+        this.moveCacheService.set(moveDetail.name, moveDetail);
+        return moveDetail;
       })
     );
   }

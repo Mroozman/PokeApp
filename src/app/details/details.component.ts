@@ -15,14 +15,7 @@ export class DetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe((data: Data) => {
       this.pokemonData = data['pokemon'];
-      this.calculateHeightAndWeight();
-      console.log(this.pokemonData);
     });
-  }
-
-  public calculateHeightAndWeight(): void {
-    this.pokemonData.height = this.pokemonData.height / 10;
-    this.pokemonData.weight = this.pokemonData.weight / 10;
   }
 
   public calculateStatsSum(): number {
