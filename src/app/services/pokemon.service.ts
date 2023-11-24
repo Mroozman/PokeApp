@@ -12,6 +12,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { PokemonCacheService } from './pokemon-cache.service';
+import { TypeService } from './type.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,8 @@ export class PokemonService {
 
   constructor(
     private http: HttpClient,
-    private pokemonCacheService: PokemonCacheService
+    private pokemonCacheService: PokemonCacheService,
+    private typeService: TypeService
   ) {}
 
   public fetchPokemonByNameOrId(nameOrId: string): Pokemon {
@@ -66,7 +68,7 @@ export class PokemonService {
               pok.moves.push(new Move(move.move.name, move.move.url));
             });
             pokemon.types.forEach((type) => {
-              pok.type.push(new PokemonType(type.type.name));
+              pok.type.push(this.typeService.get(type.type.name));
             });
             return pok;
           })
