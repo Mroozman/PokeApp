@@ -16,6 +16,7 @@ import { DetailsComponent } from './details/details.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { MoveDetailsComponent } from './details/move-details/move-details.component';
 import { AbilityDetailsComponent } from './details/ability-details/ability-details.component';
+import { ErrorPageComponent } from './error-page/error-page.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { AbilityDetailsComponent } from './details/ability-details/ability-detai
     DetailsComponent,
     MoveDetailsComponent,
     AbilityDetailsComponent,
+    ErrorPageComponent,
   ],
   imports: [
     BrowserModule,
