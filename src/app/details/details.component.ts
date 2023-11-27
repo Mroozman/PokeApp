@@ -9,12 +9,16 @@ import { Pokemon } from '../models/pokemon.model';
 })
 export class DetailsComponent implements OnInit {
   public pokemonData: Pokemon;
+  public isLoading: boolean = true;
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((data: Data) => {
       this.pokemonData = data['pokemon'];
+      if (this.pokemonData !== undefined) {
+        this.isLoading = false;
+      }
     });
   }
 

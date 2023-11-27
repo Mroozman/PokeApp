@@ -1,4 +1,4 @@
-<div class="col-12 text-center">
+<div *ngIf="!isLoading" class="col-12 text-center">
   <h1>#{{ pokemonData.id }} {{ pokemonData.name | uppercase }}</h1>
   <hr />
   <img class="pokemon-sprite" src="{{ pokemonData.sprite }}" />
@@ -37,17 +37,6 @@
   </div>
   <hr />
   <h4>Moves:</h4>
-  <!-- <div class="row justify-content-center">
-    <button
-      [pTooltip]="tooltipContent"
-      tooltipPosition="top"
-      tooltipEvent="focus"
-      class="col-6 col-md-3 col-lg-2 move-button"
-      *ngFor="let move of pokemonData.moves"
-    >
-      {{ move.name | uppercase }}
-    </button>
-  </div> -->
   <div class="row justify-content-center">
     <app-move-details
       class="col-6 col-md-3 col-lg-2"
@@ -57,20 +46,6 @@
   </div>
 </div>
 
-<!-- <ng-template #tooltipContent>
-  <div class="container move-tooltip">
-    <div class="row justify-content-center">
-      <div class="col-12">
-        <h5>move name</h5>
-      </div>
-      <hr />
-      <div class="move-details">
-        <div class="col-12">Type: Special</div>
-        <div class="col-12">Accuracy: 100</div>
-        <div class="col-12">Power: 100</div>
-      </div>
-      <hr />
-      <p>Move description</p>
-    </div>
-  </div>
-</ng-template> -->
+<div *ngIf="isLoading" class="col-12 text-center">
+  <h1>LOADING...</h1>
+</div>
