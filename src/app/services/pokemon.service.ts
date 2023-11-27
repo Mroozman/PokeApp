@@ -1,9 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Pokemon } from '../models/pokemon.model';
-import { BehaviorSubject, Subject, map } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, map, tap } from 'rxjs';
 import { Stats } from '../models/stats.model';
-import { PokemonType } from '../models/pokemonType.model';
 import { Move } from '../models/move.model';
 import { Ability } from '../models/ability.model';
 import {
@@ -60,7 +59,8 @@ export class PokemonService {
                 new Ability(
                   ability.ability.name,
                   ability.ability.url,
-                  ability.is_hidden
+                  ability.is_hidden,
+                  'No effect'
                 )
               );
             });
@@ -123,7 +123,8 @@ export class PokemonService {
               new Ability(
                 ability.ability.name,
                 ability.ability.url,
-                ability.is_hidden
+                ability.is_hidden,
+                'No effect'
               )
             );
           });
@@ -190,6 +191,19 @@ export class PokemonService {
         }
       }
     });
+  }
+
+  public fetchAbilityEffect(abilityName: string): Observable<Object> {
+    return this.http.get('https://pokeapi.co/api/v2/ability/' + abilityName);
+  }
+
+  public cacheAbilityEffect(abilityName: string, abilityEffect: string): void {
+    const index = this.searchedPkmn.abilities.findIndex(
+      (abilityToFind) => abilityToFind.name === abilityName
+    );
+    this.searchedPkmn.abilities[index].effect = abilityEffect;
+    this.searchedPokemon.next(this.searchedPkmn);
+    this.pokemonCacheService.set(this.searchedPkmn.name, this.searchedPkmn);
   }
 
   public getSearchedPokemon(): Pokemon {

@@ -14,7 +14,7 @@ export class PokemonCacheService {
   //storing data in cache
   set(key: string, data: Pokemon): void {
     if (this.cache.has(key)) {
-      return;
+      this.clear(key);
     }
     this.cache.set(key, data);
     this.cache$.next(this.cache.get(key));

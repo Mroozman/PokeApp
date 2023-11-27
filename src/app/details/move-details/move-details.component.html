@@ -1,5 +1,5 @@
 <button
-  [pTooltip]="tooltipContent"
+  [pTooltip]="moveContent"
   tooltipPosition="top"
   tooltipEvent="focus"
   class="move-button"
@@ -7,7 +7,7 @@
   {{ pokemonMove.name | uppercase }}
 </button>
 
-<ng-template #tooltipContent>
+<ng-template #moveContent>
   <div class="container move-tooltip">
     <div class="row justify-content-center">
       <div class="col-12">

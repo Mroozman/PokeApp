@@ -1,0 +1,30 @@
+@import "library";
+
+.ability-tooltip {
+  background-color: $primary-hover;
+  border: 1px solid $accent;
+  z-index: 100;
+  padding: 15px;
+  border-radius: 25px;
+}
+
+.ability-details {
+  padding-bottom: 15px;
+}
+
+.ability-button {
+  background-color: $primary;
+  font-size: 22px;
+  font-weight: bold;
+  border: 1px solid transparent;
+  color: white;
+  margin: 5px;
+  padding: 5px;
+  width: 100%;
+  border-radius: 25px;
+}
+
+.ability-button:hover {
+  background-color: $primary-hover;
+  border: 1px solid $accent;
+}

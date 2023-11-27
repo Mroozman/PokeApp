@@ -15,6 +15,7 @@ import { ListOfSearchedComponent } from './search/list-of-searched/list-of-searc
 import { DetailsComponent } from './details/details.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { MoveDetailsComponent } from './details/move-details/move-details.component';
+import { AbilityDetailsComponent } from './details/ability-details/ability-details.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { MoveDetailsComponent } from './details/move-details/move-details.compon
     ListOfSearchedComponent,
     DetailsComponent,
     MoveDetailsComponent,
+    AbilityDetailsComponent,
   ],
   imports: [
     BrowserModule,

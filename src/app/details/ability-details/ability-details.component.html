@@ -1,0 +1,26 @@
+<button
+  tooltipEvent="focus"
+  [pTooltip]="abilityContent"
+  tooltipPosition="top"
+  class="col-2 ability-button"
+>
+  {{ abilityToShow.name | uppercase }}
+</button>
+
+<ng-template #abilityContent>
+  <div class="container ability-tooltip">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <h5>{{ abilityToShow.name | uppercase }}</h5>
+      </div>
+      <hr />
+      <div class="ability-details">
+        <div class="col-12">Hidden: {{ abilityToShow.isHidden }}</div>
+        <div class="col-12">
+          <p>Effect: {{ abilityToShow.effect | titlecase }}</p>
+        </div>
+      </div>
+      <hr />
+    </div>
+  </div>
+</ng-template>
