@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ListOfSearchedComponent } from './search/list-of-searched/list-of-searched.component';
 import { DetailsComponent } from './details/details.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { TableModule } from 'primeng/table';
 import { MoveDetailsComponent } from './details/move-details/move-details.component';
 import { AbilityDetailsComponent } from './details/ability-details/ability-details.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
@@ -40,6 +41,7 @@ import { ErrorPageComponent } from './error-page/error-page.component';
     ReactiveFormsModule,
     HttpClientModule,
     TooltipModule,
+    TableModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

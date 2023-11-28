@@ -1,0 +1,19 @@
+@import "library";
+
+.header {
+  font-size: 24px;
+  border-bottom: 1px $accent solid;
+}
+
+.pokemon-button {
+  width: 100%;
+  font-size: 20px;
+  background-color: $primary;
+  color: white;
+  margin: 2px 0px;
+  border: 1px solid transparent;
+}
+
+.pokemon-button:hover {
+  background-color: $primary-hover;
+}

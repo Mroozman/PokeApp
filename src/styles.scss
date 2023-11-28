@@ -4,3 +4,51 @@ body {
   background-color: $background-color;
   color: white;
 }
+
+.p-paginator {
+  margin: 15px 0px;
+}
+
+.p-paginator-page {
+  color: white;
+  margin: 0px 10px;
+}
+
+.p-paginator-first,
+.p-paginator-last,
+.p-paginator-next,
+.p-paginator-prev {
+  color: white;
+  margin: 0px 5px;
+}
+
+.p-paginator-first:disabled,
+.p-paginator-last:disabled,
+.p-paginator-next:disabled,
+.p-paginator-prev:disabled {
+  color: #666;
+}
+
+.p-paginator-page:hover,
+.p-paginator-first:hover,
+.p-paginator-last:hover,
+.p-paginator-next:hover,
+.p-paginator-prev:hover {
+  color: $accent;
+}
+
+.p-dropdown-item {
+  background-color: $primary;
+  padding: 5px 10px;
+  // border: 1px solid $accent;
+}
+
+.p-dropdown-item {
+  background-color: $primary;
+  padding: 5px 10px;
+  border: 1px solid $accent;
+}
+
+.p-dropdown-item:hover {
+  background-color: $primary-hover;
+}

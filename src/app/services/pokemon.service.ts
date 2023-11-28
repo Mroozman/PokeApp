@@ -134,6 +134,8 @@ export class PokemonService {
           pokemon.types.forEach((type) => {
             pok.type.push(this.typeService.get(type.type.name));
           });
+          this.searchedPkmn = pok;
+          this.searchedPokemon.next(this.searchedPkmn);
           return pok;
         })
       );
@@ -223,6 +225,20 @@ export class PokemonService {
     } else {
       return null;
     }
+  }
+
+  public fetchListOfAllPokemon(): Observable<{
+    count: number;
+    next: string;
+    previous: string;
+    results: [name: string, url: string];
+  }> {
+    return this.http.get<{
+      count: number;
+      next: string;
+      previous: string;
+      results: [name: string, url: string];
+    }>('https://pokeapi.co/api/v2/pokemon?limit=1291');
   }
 }
 
