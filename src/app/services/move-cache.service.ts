@@ -13,7 +13,8 @@ export class MoveCacheService {
   constructor() {}
 
   set(key: string, data: MoveDetail): void {
-    if (this.cache.has(key)) {
+    const storedMove = this.get(key);
+    if (storedMove) {
       return;
     }
     localStorage.setItem(key, JSON.stringify(data));

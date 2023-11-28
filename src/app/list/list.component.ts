@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonService } from '../services/pokemon.service';
-import { map } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
