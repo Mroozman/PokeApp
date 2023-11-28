@@ -10,9 +10,9 @@ import { Subscription } from 'rxjs';
 export class SearchComponent implements OnInit, OnDestroy {
   private subscriptionStore = new Subscription();
 
-  constructor(private pokemonService: PokemonService) {}
+  public searchByColor: boolean = false;
 
-  public searchByColor = false;
+  constructor(private pokemonService: PokemonService) {}
 
   ngOnInit(): void {
     this.subscriptionStore.add(

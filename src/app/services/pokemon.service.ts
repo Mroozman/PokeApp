@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Pokemon } from '../models/pokemon.model';
-import { BehaviorSubject, Observable, Subject, map, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, map } from 'rxjs';
 import { Stats } from '../models/stats.model';
 import { Move } from '../models/move.model';
 import { Ability } from '../models/ability.model';
@@ -13,13 +13,47 @@ import {
 import { PokemonCacheService } from './pokemon-cache.service';
 import { TypeService } from './type.service';
 
+class PokemonFromApi {
+  constructor(
+    public id: number,
+    public name: string,
+    public height: number,
+    public weight: number,
+    public abilities: {
+      ability: { name: string; url: string; is_hidden: boolean };
+    }[],
+    public moves: { move: { name: string; url: string } }[],
+    public sprites: { front_default: string },
+    public stats: { base_stat: number }[],
+    public types: { type: { name: string } }[]
+  ) {}
+}
+
+class PokemonByColorFromApi {
+  public id: number;
+  public name: string;
+  public names: string[];
+  public pokemon_species: { name: string; url: string }[];
+}
+
+class AbilityEffectFromApi {
+  public effect_entries: { language: { name: string }; short_effect: string }[];
+}
+
+class AllPokemonsFromApi {
+  public count: number;
+  public next: string;
+  public previous: string;
+  public results: { name: string; url: string }[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class PokemonService {
+  private listOfPkmnByColor: string[] = [];
   public searchedPkmn: Pokemon;
   public searchedPokemon = new Subject<Pokemon>();
-  private listOfPkmnByColor: string[] = [];
   public listOfPokemonByColor = new Subject<string[]>();
   public searchByColor = new BehaviorSubject<boolean>(false);
 
@@ -33,9 +67,9 @@ export class PokemonService {
     if (nameOrId !== null) {
       const url = 'https://pokeapi.co/api/v2/pokemon/' + nameOrId;
       this.http
-        .get(url)
+        .get<PokemonFromApi>(url)
         .pipe(
-          map((pokemon: any) => {
+          map((pokemon) => {
             const pok = new Pokemon(
               pokemon.id,
               pokemon.name,
@@ -59,7 +93,7 @@ export class PokemonService {
                 new Ability(
                   ability.ability.name,
                   ability.ability.url,
-                  ability.is_hidden,
+                  ability.ability.is_hidden,
                   'No effect'
                 )
               );
@@ -86,7 +120,7 @@ export class PokemonService {
               this.searchedPkmn
             );
           },
-          error: (error) => {
+          error: (error: Error) => {
             this.listOfPokemonByColor.next([]);
             this.listOfPkmnByColor = [];
             this.searchedPokemon.next(null);
@@ -95,11 +129,11 @@ export class PokemonService {
     }
   }
 
-  public fetchPokemonFromApi(nameOrId: string) {
+  public fetchPokemonFromApi(nameOrId: string): Observable<Pokemon> {
     if (nameOrId !== null) {
       const url = 'https://pokeapi.co/api/v2/pokemon/' + nameOrId;
-      return this.http.get(url).pipe(
-        map((pokemon: any) => {
+      return this.http.get<PokemonFromApi>(url).pipe(
+        map((pokemon) => {
           const pok = new Pokemon(
             pokemon.id,
             pokemon.name,
@@ -123,7 +157,7 @@ export class PokemonService {
               new Ability(
                 ability.ability.name,
                 ability.ability.url,
-                ability.is_hidden,
+                ability.ability.is_hidden,
                 'No effect'
               )
             );
@@ -142,32 +176,25 @@ export class PokemonService {
     }
   }
 
-  public fetchPokemonByColor(color: string) {
+  public fetchPokemonByColor(color: string): void {
     if (color !== null) {
       this.listOfPkmnByColor = [];
       const url = 'https://pokeapi.co/api/v2/pokemon-color/' + color;
       this.http
-        .get(url)
+        .get<PokemonByColorFromApi>(url)
         .pipe(
-          map(
-            (pokemonsByColor: {
-              id: number;
-              name: string;
-              names: string[];
-              pokemon_species: [{ name: string; url: string }];
-            }) => {
-              pokemonsByColor.pokemon_species.forEach((pokemon) => {
-                this.listOfPkmnByColor.push(pokemon.name);
-              });
-            }
-          )
+          map((pokemonsByColor) => {
+            pokemonsByColor.pokemon_species.forEach((pokemon) => {
+              this.listOfPkmnByColor.push(pokemon.name);
+            });
+          })
         )
         .subscribe({
           next: () => {
             this.listOfPokemonByColor.next(this.listOfPkmnByColor);
             this.searchedPokemon.next(null);
           },
-          error: (error) => {
+          error: (error: Error) => {
             this.listOfPokemonByColor.next([]);
             this.listOfPkmnByColor = [];
             this.searchedPokemon.next(null);
@@ -176,7 +203,7 @@ export class PokemonService {
     }
   }
 
-  public lookForPokemon(nameIdOrColor: string) {
+  public lookForPokemon(nameIdOrColor: string): void {
     this.searchByColor.subscribe((byColor: boolean) => {
       if (byColor) {
         this.fetchPokemonByColor(nameIdOrColor);
@@ -195,8 +222,12 @@ export class PokemonService {
     });
   }
 
-  public fetchAbilityEffect(abilityName: string): Observable<Object> {
-    return this.http.get('https://pokeapi.co/api/v2/ability/' + abilityName);
+  public fetchAbilityEffect(
+    abilityName: string
+  ): Observable<AbilityEffectFromApi> {
+    return this.http.get<AbilityEffectFromApi>(
+      'https://pokeapi.co/api/v2/ability/' + abilityName
+    );
   }
 
   public cacheAbilityEffect(abilityName: string, abilityEffect: string): void {
@@ -227,18 +258,10 @@ export class PokemonService {
     }
   }
 
-  public fetchListOfAllPokemon(): Observable<{
-    count: number;
-    next: string;
-    previous: string;
-    results: [name: string, url: string];
-  }> {
-    return this.http.get<{
-      count: number;
-      next: string;
-      previous: string;
-      results: [name: string, url: string];
-    }>('https://pokeapi.co/api/v2/pokemon?limit=1291');
+  public fetchListOfAllPokemon(): Observable<AllPokemonsFromApi> {
+    return this.http.get<AllPokemonsFromApi>(
+      'https://pokeapi.co/api/v2/pokemon?limit=1291'
+    );
   }
 }
 

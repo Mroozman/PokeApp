@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Move } from '../models/move.model';
 import { BehaviorSubject } from 'rxjs';
 import { MoveDetail } from '../models/moveDetail';
 

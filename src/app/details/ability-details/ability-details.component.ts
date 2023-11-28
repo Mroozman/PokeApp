@@ -18,17 +18,15 @@ export class AbilityDetailsComponent implements OnInit {
       localStorage.getItem(this.ability.name)
     );
     if (storedAbility !== null) {
-      console.log(storedAbility);
       this.abilityToShow = storedAbility;
     } else {
       this.abilityToShow = this.ability;
       if (this.abilityToShow.effect === 'No effect') {
         this.pokemonService
           .fetchAbilityEffect(this.ability.name)
-          .subscribe((abilityData: any) => {
-            console.log(abilityData);
+          .subscribe((abilityData) => {
             if (abilityData.effect_entries.length >= 1) {
-              abilityData.effect_entries.forEach((entry: any) => {
+              abilityData.effect_entries.forEach((entry) => {
                 if (entry.language.name === 'en') {
                   this.abilityToShow.effect = entry.short_effect;
                   localStorage.setItem(

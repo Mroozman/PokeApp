@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
-  public listOfPokemonNames: [name: string, url: string] = ['', ''];
+  public listOfPokemonNames: { name: string; url: string }[] = [];
 
   constructor(private pokemonService: PokemonService, private router: Router) {}
 
@@ -24,7 +24,7 @@ export class ListComponent implements OnInit {
     }
   }
 
-  public onPokemonClick(pokemonName: string) {
+  public onPokemonClick(pokemonName: string): void {
     this.router.navigate(['details', pokemonName]);
   }
 }

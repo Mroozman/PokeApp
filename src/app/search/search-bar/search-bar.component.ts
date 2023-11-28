@@ -1,13 +1,6 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subscription, debounceTime, pipe, takeWhile } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Subscription, debounceTime } from 'rxjs';
 import { PokemonService } from 'src/app/services/pokemon.service';
 
 @Component({
@@ -18,10 +11,11 @@ import { PokemonService } from 'src/app/services/pokemon.service';
 export class SearchBarComponent implements OnInit, OnDestroy {
   private subscriptionStore: Subscription = new Subscription();
   public searchBarForm: FormGroup;
+  public lastColorSearch: boolean = false;
 
   constructor(private pokemonService: PokemonService) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.searchBarForm = new FormGroup({
       pokemonInput: new FormControl(null),
     });
@@ -33,6 +27,15 @@ export class SearchBarComponent implements OnInit, OnDestroy {
             this.searchBarForm.get('pokemonInput').value;
           this.pokemonService.lookForPokemon(pkmnlookingFor);
         },
+      })
+    );
+
+    this.subscriptionStore.add(
+      this.pokemonService.searchByColor.subscribe((isColorSearch: boolean) => {
+        if (this.lastColorSearch !== isColorSearch) {
+          this.searchBarForm.reset();
+        }
+        this.lastColorSearch = isColorSearch;
       })
     );
   }

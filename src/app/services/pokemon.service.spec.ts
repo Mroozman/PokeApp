@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { PokemonService } from './pokemon.service';
 import { Pokemon } from '../models/pokemon.model';
 import { Ability } from '../models/ability.model';
-import { MoveDetail } from '../models/moveDetail';
 import { TypeService } from './type.service';
 import { Stats } from '../models/stats.model';
 import { Move } from '../models/move.model';

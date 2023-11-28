@@ -25,7 +25,6 @@ describe('SearchBarComponent', () => {
   });
 
   it('should have proper form', () => {
-    console.log(component.searchBarForm);
     expect(component.searchBarForm.controls.pokemonInput).toBeTruthy();
   });
 });

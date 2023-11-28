@@ -1,6 +1,5 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, concatMap } from 'rxjs';
-import { Pokemon } from 'src/app/models/pokemon.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { PokemonService } from 'src/app/services/pokemon.service';
 
 @Component({
