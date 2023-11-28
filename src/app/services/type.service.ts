@@ -42,50 +42,57 @@ export class TypeService {
 
   public getTypesFormApi() {
     this.pokemonTypeNames.forEach((type: string) => {
-      const url = 'https://pokeapi.co/api/v2/type/' + type;
-      this.http
-        .get(url)
-        .pipe(
-          tap((typeFormApi: any) => {
-            const dmgRelations: damageRelations = typeFormApi.damage_relations;
+      const storedType = this.get(type);
+      if (storedType === undefined || storedType === null) {
+        console.log('api call types');
+        const url = 'https://pokeapi.co/api/v2/type/' + type;
+        this.http
+          .get(url)
+          .pipe(
+            tap((typeFormApi: any) => {
+              const dmgRelations: damageRelations =
+                typeFormApi.damage_relations;
 
-            let doubleDamageFrom: string[] = [];
-            dmgRelations.double_damage_from.forEach((double_from) => {
-              doubleDamageFrom.push(double_from.name);
-            });
-            let doubleDamageTo: string[] = [];
-            dmgRelations.double_damage_to.forEach((double_to) => {
-              doubleDamageTo.push(double_to.name);
-            });
-            let halfDamageFrom: string[] = [];
-            dmgRelations.half_damage_from.forEach((half_from) => {
-              halfDamageFrom.push(half_from.name);
-            });
-            let halfDamageTo: string[] = [];
-            dmgRelations.half_damage_to.forEach((half_to) => {
-              halfDamageTo.push(half_to.name);
-            });
-            let noDamageFrom: string[] = [];
-            dmgRelations.no_damage_from.forEach((no_from) => {
-              noDamageFrom.push(no_from.name);
-            });
-            let noDamageTo: string[] = [];
-            dmgRelations.no_damage_to.forEach((no_to) => {
-              noDamageTo.push(no_to.name);
-            });
-            const pokemonType = new PokemonType(
-              typeFormApi.name,
-              doubleDamageFrom,
-              halfDamageFrom,
-              noDamageFrom,
-              doubleDamageTo,
-              halfDamageTo,
-              noDamageTo
-            );
-            this.set(typeFormApi.name, pokemonType);
-          })
-        )
-        .subscribe();
+              let doubleDamageFrom: string[] = [];
+              dmgRelations.double_damage_from.forEach((double_from) => {
+                doubleDamageFrom.push(double_from.name);
+              });
+              let doubleDamageTo: string[] = [];
+              dmgRelations.double_damage_to.forEach((double_to) => {
+                doubleDamageTo.push(double_to.name);
+              });
+              let halfDamageFrom: string[] = [];
+              dmgRelations.half_damage_from.forEach((half_from) => {
+                halfDamageFrom.push(half_from.name);
+              });
+              let halfDamageTo: string[] = [];
+              dmgRelations.half_damage_to.forEach((half_to) => {
+                halfDamageTo.push(half_to.name);
+              });
+              let noDamageFrom: string[] = [];
+              dmgRelations.no_damage_from.forEach((no_from) => {
+                noDamageFrom.push(no_from.name);
+              });
+              let noDamageTo: string[] = [];
+              dmgRelations.no_damage_to.forEach((no_to) => {
+                noDamageTo.push(no_to.name);
+              });
+              const pokemonType = new PokemonType(
+                typeFormApi.name,
+                doubleDamageFrom,
+                halfDamageFrom,
+                noDamageFrom,
+                doubleDamageTo,
+                halfDamageTo,
+                noDamageTo
+              );
+              this.set(typeFormApi.name, pokemonType);
+            })
+          )
+          .subscribe();
+      } else {
+        this.pokemonTypes.set(type, storedType);
+      }
     });
   }
 
@@ -93,11 +100,10 @@ export class TypeService {
     if (this.pokemonTypes.has(key)) {
       return;
     }
-    this.pokemonTypes.set(key, data);
+    localStorage.setItem(key, JSON.stringify(data));
   }
 
   get(key: string): PokemonType {
-    const data = this.pokemonTypes.get(key);
-    return data;
+    return JSON.parse(localStorage.getItem(key));
   }
 }

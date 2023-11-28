@@ -12,25 +12,14 @@ export class MoveCacheService {
 
   constructor() {}
 
-  //storing data in cache
   set(key: string, data: MoveDetail): void {
     if (this.cache.has(key)) {
       return;
     }
-    this.cache.set(key, data);
-    this.cache$.next(this.cache.get(key));
+    localStorage.setItem(key, JSON.stringify(data));
   }
 
-  // getting data from cache
   get(key: string): MoveDetail {
-    const data = this.cache.get(key);
-    this.cache$.next(data);
-    return data;
-  }
-
-  //clear cache
-  clear(key: string): void {
-    this.cache.delete(key);
-    this.cache$.next(null);
+    return JSON.parse(localStorage.getItem(key));
   }
 }

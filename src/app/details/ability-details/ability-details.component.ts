@@ -14,23 +14,36 @@ export class AbilityDetailsComponent implements OnInit {
   constructor(private pokemonService: PokemonService) {}
 
   ngOnInit(): void {
-    this.abilityToShow = this.ability;
-    if (this.abilityToShow.effect === 'No effect') {
-      this.pokemonService
-        .fetchAbilityEffect(this.ability.name)
-        .subscribe((abilityData: any) => {
-          if (abilityData.effect_entries.length > 1) {
-            abilityData.effect_entries.forEach((entry: any) => {
-              if (entry.language.name === 'en') {
-                this.abilityToShow.effect = entry.short_effect;
-                this.pokemonService.cacheAbilityEffect(
-                  this.abilityToShow.name,
-                  this.abilityToShow.effect
-                );
-              }
-            });
-          }
-        });
+    const storedAbility: Ability = JSON.parse(
+      localStorage.getItem(this.ability.name)
+    );
+    if (storedAbility !== null) {
+      console.log(storedAbility);
+      this.abilityToShow = storedAbility;
+    } else {
+      this.abilityToShow = this.ability;
+      if (this.abilityToShow.effect === 'No effect') {
+        this.pokemonService
+          .fetchAbilityEffect(this.ability.name)
+          .subscribe((abilityData: any) => {
+            console.log(abilityData);
+            if (abilityData.effect_entries.length >= 1) {
+              abilityData.effect_entries.forEach((entry: any) => {
+                if (entry.language.name === 'en') {
+                  this.abilityToShow.effect = entry.short_effect;
+                  localStorage.setItem(
+                    this.abilityToShow.name,
+                    JSON.stringify(this.abilityToShow)
+                  );
+                  this.pokemonService.cacheAbilityEffect(
+                    this.abilityToShow.name,
+                    this.abilityToShow.effect
+                  );
+                }
+              });
+            }
+          });
+      }
     }
   }
 }

@@ -14,9 +14,15 @@ export class ListComponent implements OnInit {
   constructor(private pokemonService: PokemonService, private router: Router) {}
 
   ngOnInit(): void {
-    this.pokemonService
-      .fetchListOfAllPokemon()
-      .subscribe((pokemons) => (this.listOfPokemonNames = pokemons.results));
+    const storedNames = JSON.parse(localStorage.getItem('pokemonNames'));
+    if (storedNames === undefined || storedNames === null) {
+      this.pokemonService.fetchListOfAllPokemon().subscribe((pokemons) => {
+        this.listOfPokemonNames = pokemons.results;
+        localStorage.setItem('pokemonNames', JSON.stringify(pokemons.results));
+      });
+    } else {
+      this.listOfPokemonNames = storedNames;
+    }
   }
 
   public onPokemonClick(pokemonName: string) {

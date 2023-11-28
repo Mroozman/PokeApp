@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, map } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Move } from 'src/app/models/move.model';
 import { MoveDetail } from 'src/app/models/moveDetail';
 import { MoveCacheService } from 'src/app/services/move-cache.service';
@@ -21,8 +21,9 @@ export class MoveDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const cachedMoveDetail = this.moveCacheService.get(this.pokemonMove.name);
-    if (cachedMoveDetail !== undefined) {
+    const moveStorageName = this.pokemonMove.name.replace('-', ' ');
+    const cachedMoveDetail = this.moveCacheService.get(moveStorageName);
+    if (cachedMoveDetail !== null) {
       this.pokemonMoveDetail = cachedMoveDetail;
     } else {
       this.subscriptionStore.add(
@@ -30,11 +31,12 @@ export class MoveDetailsComponent implements OnInit, OnDestroy {
           .getMoveByNameOrId(this.pokemonMove.details)
           .subscribe((move: MoveDetail) => {
             this.pokemonMoveDetail = move;
+            this.moveCacheService.set(move.name, move);
           })
       );
     }
 
-    this.pokemonMove.name = this.pokemonMove.name.replace('-', ' ');
+    this.pokemonMove.name = moveStorageName;
   }
 
   ngOnDestroy(): void {
