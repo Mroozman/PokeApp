@@ -2,6 +2,10 @@
   <h1>#{{ pokemonData.id }} {{ pokemonData.name | uppercase }}</h1>
   <hr />
   <img class="pokemon-sprite" src="{{ pokemonData.sprite }}" />
+  <div class="row justify-content-center">
+    <p class="col-2">Height: {{ pokemonData.height }}m</p>
+    <p class="col-2">Weight: {{ pokemonData.weight }}kg</p>
+  </div>
   <hr />
   <h4>Type</h4>
   <div class="row justify-content-center">
@@ -9,10 +13,7 @@
       {{ type.name | uppercase }}
     </h4>
   </div>
-  <div class="row justify-content-center">
-    <p class="col-2">Height: {{ pokemonData.height }}m</p>
-    <p class="col-2">Weight: {{ pokemonData.weight }}kg</p>
-  </div>
+
   <hr />
   <h4>Stats:</h4>
   <div class="row justify-content-center">
