@@ -42,6 +42,7 @@ import { ErrorPageComponent } from './error-page/error-page.component';
     HttpClientModule,
     TooltipModule,
     TableModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
